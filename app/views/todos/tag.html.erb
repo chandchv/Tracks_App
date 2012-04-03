@@ -1,0 +1,33 @@
+<div id="display_box">
+  <div id="no_todos_in_view" class="container context" <%= "style=\"display:none\"" unless @not_done_todos.empty? %> >
+       <h2><%= t('todos.no_actions_found_title')%></h2>
+    <div class="message"><p><%= t('todos.no_actions_with', :tag_name=>@tag_name) %></p></div>
+  </div>
+
+  <%= render :partial => "contexts/context", :collection => @contexts_to_show,
+    :locals => { :collapsible => true } %>
+
+  <% unless @deferred.nil? -%>
+    <%= render :partial => "todos/deferred", :locals => {
+                                               :deferred => @deferred,
+                                               :pending => @pending,
+                                               :collapsible => true,
+                                               :append_descriptor => t('todos.tagged_with', :tag_name => @tag_title),
+                                               :parent_container_type => 'tag'
+                                              } %>
+  <% end -%>
+
+  <% unless @hidden_todos.nil? -%>
+    <%= render :partial => "todos/hidden", :object => @hidden_todos, :locals => { :collapsible => true, :append_descriptor => t('todos.tagged_with', :tag_name => @tag_title) } %>
+  <% end -%>
+
+  <% unless @done.nil? -%>
+    <%= render :partial => "todos/completed", :object => @done,
+      :locals => { :collapsible => true, :append_descriptor => t('todos.tagged_with', :tag_name => @tag_title) } %>
+  <% end -%>
+</div><!-- End of display_box -->
+
+<div id="input_box">
+  <%= render :partial => "shared/add_new_item_form" %>
+  <%= render :file => "sidebar/sidebar.html.erb" %>
+</div><!-- End of input box -->
